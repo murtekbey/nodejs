@@ -1,43 +1,30 @@
-<!doctype html>
-html(lang="en")
+extends layouts/main-layout.pug
 
-    head
-        meta(charset="utf-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
-        script(src="https://kit.fontawesome.com/ed54ffef27.js")
-        link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css")
-        link(rel="stylesheet" href="/css/style.css")
-        title Add Product
+block styles
+    link(rel="stylesheet" href="/css/forms.css")
 
-    body
-        nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
-            .container
-                a(href="/").navbar-brand Shopping
-                ul.navbar-nav.ml-auto
-                    li.nav-item.active
-                        a.nav-link(href="") Login
+block content
+    form(action="/admin/add-product" method="POST")
+        .form-group.row
+            label(for="name").col-sm-2.col-form-label Product Name
+            .col-sm-10
+                input.form-control#name(type="text" name="name")
 
-                    li.nav-item.active
-                        a.nav-link(href="") Register
+        .form-group.row
+            label(for="price").col-sm-2.col-form-label Price
+            .col-sm-10
+                input.form-control#price(type="text" name="price")
 
-        .container.pt-100
-            .row
-                .col-lg-3
-                    .list-group
-                        a(href="").list-group-item Category 1
-                        a(href="").list-group-item Category 2
-                        a(href="").list-group-item Category 3
-                .col-lg-9
-                    form(action="/admin/add-product" method="POST")
-                        .form-group.row
-                            label(for="productName").col-sm-2.col-form-label Name
-                            .col-sm-10
-                                input.form-control#productName(type="text" name="productName")
+        .form-group.row
+            label(for="image").col-sm-2.col-form-label Image
+            .col-sm-10
+                input.form-control#image(type="text" name="image")
 
-                        .form-group.row
-                            .col-sm-10.offset-sm-2
-                                input.btn.btn-primary(type="submit" value="Save Product")
+        .form-group.row
+            label(for="description").col-sm-2.col-form-label Description
+            .col-sm-10
+                input.form-control#description(type="text" name="description")
 
-        script(src="https://code.jquery.com/jquery-3.3.1.slim.min.js")
-        script(src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js")
-        script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js")
+        .form-group.row
+            .col-sm-10.offset-sm-2
+                input.btn.btn-primary(type="submit" value="Save Product")

@@ -4,21 +4,21 @@ const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
 
-app.set("view engine", "pug");
-app.set("views", "./views");
+app.set('view engine', 'pug');
+app.set('views', './views');
 
-const adminRoutes = require('./routes/admin');
+const admin = require('./routes/admin');
 const userRoutes = require('./routes/user');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname,'public')));
 
 // Routes
-app.use('/admin', adminRoutes);
+app.use('/admin', admin.routes);
 app.use(userRoutes);
 
 app.use((req, res) => {
-    res.status(404).render('404');
+    res.status(404).render('404', { title: 'Page Not Found' });
 });
 
 app.listen(3000, () => {
