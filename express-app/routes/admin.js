@@ -1,32 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-const products = [
-    { name: 'Samsung S6', price: 3000, image: '1.jpg', description: 'iyi telefon' },
-    { name: 'Samsung S7', price: 4000, image: '2.jpg', description: 'çok iyi telefon' },
-    { name: 'Samsung S8', price: 5000, image: '3.jpg', description: 'orta telefon' },
-    { name: 'Samsung S9', price: 6000, image: '4.jpg', description: 'güzel telefon' },
-]
+const adminController = require('../controllers/admin');
 
 // /admin/add-product=> GET
-router.get('/add-product', (req, res, next) => {
-    res.render('add-product', { 
-        title: 'Add a New Product',
-        path: '/admin/add-product',
-    });
-});
-
+router.get('/add-product', adminController.getAddProduct);
 // /admin/add-product=> POST
-router.post('/add-product', (req, res, next) => {
-    // database kayıt
-    products.push({
-        name: req.body.name,
-        price: req.body.price,
-        image: req.body.image,
-        description: req.body.description,
-    });
-    res.redirect('/');
-});
+router.post('/add-product', adminController.postAddProduct);
 
-exports.routes = router;
-exports.products = products;
+
+// /admin/edit-product=> GET
+router.get('/edit-product', adminController.getEditProduct);
+// /admin/edit-product=> POST
+router.post('/edit-product', adminController.postEditProduct);
+
+router.get('/products', adminController.getProducts);
+
+module.exports = router;
