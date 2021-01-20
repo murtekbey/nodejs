@@ -21,9 +21,17 @@ block content
                 input.form-control#imageUrl(type="text" name="imageUrl")
 
         .form-group.row
+            label(for="categoryid").col-sm-2.col-form-label Category
+            .col-sm-10
+                select.form-control#categoryid(name="categoryid")
+                    option(value="-1") Select Category
+                    each category in categories
+                        option(value=`${category.id}`) #{category.name}
+
+        .form-group.row
             label(for="description").col-sm-2.col-form-label Description
             .col-sm-10
-                input.form-control#description(type="text" name="description")
+                textarea.form-control#description(name="description", cols="30", rows="10")
 
         .form-group.row
             .col-sm-10.offset-sm-2
