@@ -3,20 +3,36 @@ const Category = require('../models/category');
 
 // GET INDEX --> Homepage
 exports.getIndex = (req, res, next) => {
-    Product.findAll()
+
+    // $eq (equal)
+    // $ne (not equal)
+    // $gt (greater than)
+    // $gte (greater than or equal)
+    // $lt (less than)
+    // $lte (less than or equal)
+    // $in (in)
+    // $nin (not in)
+
+    Product.find()
+        // .find({ price : { $eq: 2000 }})
+        // .find({ price : { $ne: 2000 }})
+        // .find({ price : { $gt: 2000 }})
+        // .find({ price : { $gte: 2000 }})
+        // .find({ price : { $lt: 2000 }})
+        // .find({ price : { $lte: 2000 }})
+        // .find({ price : { $in: [1000,2000,3000] }})
+        // .find({ price : { $gte: 1000, $lte: 2000 }}) greater than 1000 and less than 2000
+        // .or([{ price: {$gt: 2000}, name: 'Samsung S6' }]) iki kriterden biri doğru olursa getirir.
+        // .find({name: /^Samsung/}) // starts with
+        // .find({name: /Samsung$/}) // ends with
+        // .find({name: /.*Samsung.*/}) // contains
+
         .then(products => {
-            Category.findAll()
-                .then(categories => {
-                    res.render("shop/index", {
-                        title: 'Shopping',
-                        products: products,
-                        categories: categories,
-                        path: '/'
-                    });
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+            res.render("shop/index", {
+                title: 'Shopping',
+                products: products,
+                path: '/'
+            });
         })
         .catch((err) => {
             console.log(err);
@@ -25,20 +41,13 @@ exports.getIndex = (req, res, next) => {
 
 // GET PRODUCTS --> products/
 exports.getProducts = (req, res, next) => {
-    Product.findAll()
+    Product.find()
         .then(products => {
-            Category.findAll()
-                .then(categories => {
-                    res.render("shop/products", {
-                        title: 'Products',
-                        products: products,
-                        path: '/products',
-                        categories: categories
-                    });
-                })
-                .catch(err => {
-                    console.log(err);
-                })
+            res.render("shop/products", {
+                title: 'Products',
+                products: products,
+                path: '/products',
+            });
         })
         .catch((err) => {
             console.log(err);
@@ -50,7 +59,7 @@ exports.getProductsByCategoryId = (req, res, next) => {
     const categoryId = req.params.categoryid;
     const model = [];
 
-    Category.findAll()
+    Category.find()
         .then(categories => {
             model.categories = categories;
             return Product.findByCategoryId(categoryId);
@@ -71,7 +80,7 @@ exports.getProductsByCategoryId = (req, res, next) => {
 
 // GET PRODUCT BY ID --> /products/id
 exports.getProduct = (req, res, next) => {
-    Product.findById(req.params.productid)
+    Product.findOne({ _id: req.params.productid })
         .then(products => {
             res.render('shop/product-detail', {
                 title: products.name,
