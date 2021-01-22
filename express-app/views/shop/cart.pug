@@ -14,8 +14,8 @@ block content
                 tr
                     th(style="width:100px;") Image
                     th Product Name
-                    th(style="width:150px;") Price
-                    th Quantity
+                    th(style="width:150px;") Quantity
+                    th Price
                     th(style="width:133px;")
             tbody
                 each product in products
@@ -23,18 +23,18 @@ block content
                         td
                             img(src=`/img/${product.imageUrl}` width='80')
                         td #{product.name}
+                        td #{product.quantity} 
                         td #{product.price} TL
-                        td #{product.cartItem.quantity}
                         td 
                             form(action='/delete-cartitem', method='POST')
-                                input(type='hidden' name='productid' value=`${product.id}`)
+                                input(type='hidden' name='productid' value=`${product._id}`)
                                 button(type='submit').btn.btn-danger.btn-sm Delete
             tfoot
                 td(colspan="4")
 
                     - var total = 0;
                     each product in products
-                        - total += (product.price * product.cartItem.quantity)
+                        - total += (product.price * product.quantity)
 
                 td #{total} TL
 

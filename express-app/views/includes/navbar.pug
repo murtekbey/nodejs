@@ -1,32 +1,38 @@
 nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
     .container
         a(href="/").navbar-brand Shopping
+        button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation")
+                span.navbar-toggler-icon
+        .collapse.navbar-collapse#navbarNavDropdown
+            ul.navbar-nav
 
-        ul.navbar-nav.mr-auto
+                li.nav-item
+                    a(href="/", class=( path === '/' ? 'nav-link active' : 'nav-link' )) Home    
 
-            li.nav-item
-                a(href="/", class=( path === '/' ? 'nav-link active' : 'nav-link' )) Home    
+                li.nav-item
+                    a(href="/products", class=( path === '/products' ? 'nav-link active' : 'nav-link' )) Products
 
-            li.nav-item
-                a(href="/products", class=( path === '/products' ? 'nav-link active' : 'nav-link' )) Products
+                li.nav-item
+                    a(href="/cart", class=( path === '/cart' ? 'nav-link active' : 'nav-link' )) Cart
 
-            li.nav-item
-                a(href="/cart", class=( path === '/cart' ? 'nav-link active' : 'nav-link' )) Cart
+                li.nav-item
+                    a(href="/orders", class=( path === '/orders' ? 'nav-link active' : 'nav-link' )) Orders
 
-            li.nav-item
-                a(href="/orders", class=( path === '/orders' ? 'nav-link active' : 'nav-link' )) Orders
+                li.nav-item.dropdown
+                    a.nav-link.dropdown-toggle#navbarDropdown(role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class=( path.startsWith('/admin') ? 'nav-link active' : 'nav-link' )) Manage
+                    .dropdown-menu(aria-labelledby="navbarDropdown")
+                            a.dropdown-item(href="/admin/add-product", class=( path === '/admin/add-product' ? 'dropdown-item active' : 'dropdown-item' )) Add Product  
 
-            li.nav-item
-                a(href="/admin/add-product", class=( path === '/admin/add-product' ? 'nav-link active' : 'nav-link' )) Add Product  
+                            a.dropdown-item(href="/admin/products", class=( path === '/admin/products' ? 'dropdown-item active' : 'dropdown-item' )) Admin Products
 
-            li.nav-item
-                a(href="/admin/products", class=( path === '/admin/products' ? 'nav-link active' : 'nav-link' )) Admin Products
+                            a.dropdown-item(href="/admin/add-category", class=( path === '/admin/add-category' ? 'dropdown-item active' : 'dropdown-item' )) Add Category  
 
+                            a.dropdown-item(href="/admin/categories", class=( path === '/admin/categories' ? 'dropdown-item active' : 'dropdown-item' )) Admin Categories
 
+            hr
+            ul.navbar-nav.ml-auto
+                li.nav-item
+                    a.nav-link(href="") Login
 
-        ul.navbar-nav.ml-auto
-            li.nav-item
-                a.nav-link(href="") Login
-
-            li.nav-item
-                a.nav-link(href="") Register
+                li.nav-item
+                    a.nav-link(href="") Register
