@@ -19,7 +19,7 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-dark.fixed-top
                     a(href="/orders", class=( path === '/orders' ? 'nav-link active' : 'nav-link' )) Orders
 
                 li.nav-item.dropdown
-                    a.nav-link.dropdown-toggle#navbarDropdown(role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class=( path.startsWith('/admin') ? 'nav-link active' : 'nav-link' )) Manage
+                    a.nav-link.dropdown-toggle#navbarDropdown(role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") Manage
                     .dropdown-menu(aria-labelledby="navbarDropdown")
                             a.dropdown-item(href="/admin/add-product", class=( path === '/admin/add-product' ? 'dropdown-item active' : 'dropdown-item' )) Add Product  
 

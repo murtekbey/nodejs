@@ -2,14 +2,17 @@ const Product = require('../models/product');
 const Category = require('../models/category');
 
 // GET ALL PRODUCTS --> admin/products
+// .find({ name: 'Iphone 6', price: 2000 }) // ismi Iphone6 ve fiyatı 2000 olan tüm ürünleri getirir.
+// .limit(10) // 10 tanesini getirir.
+// .sort({ name: 1 }) // isme göre sıralar.
+// .sort({ name: -1 }) // isme göre tersten sıralar.
+// .select({name: 1, price: 1}) // sadece name ve fiyat kolonları gelir.
 exports.getProducts = (req, res, next) => {
     Product.find()
-        // .find({ name: 'Iphone 6', price: 2000 }) // ismi Iphone6 ve fiyatı 2000 olan tüm ürünleri getirir.
-        // .limit(10) // 10 tanesini getirir.
-        // .sort({ name: 1 }) // isme göre sıralar.
-        // .sort({ name: -1 }) // isme göre tersten sıralar.
-        // .select({name: 1, price: 1}) // sadece name ve fiyat kolonları gelir.
+        .populate('userId', 'name -_id')
+        .select('name price userId imageUrl')
         .then(products => {
+            console.log(products);
             res.render('admin/products', {
                 title: 'Admin Products',
                 products: products,
@@ -41,7 +44,8 @@ exports.postAddProduct = (req, res, next) => {
             name: name,
             price: price,
             imageUrl: imageUrl,
-            description: description
+            description: description,
+            userId: req.user
         }
     );
     product.save()
@@ -57,18 +61,41 @@ exports.postAddProduct = (req, res, next) => {
 exports.getEditProduct = (req, res, next) => {
 
     Product.findById(req.params.productid)
+        //.populate('categories', 'name -_id')
         .then(product => {
-            res.render('admin/edit-product', {
-                title: 'Edit Product',
-                path: '/admin/products',
-                product: product,
-            });
+            return product;
         })
-        .catch(err => {
-            console.log(err);
-        });
+        .then(product => {
 
+            Category.find()
+                .then(categories => {
+                    categories = categories.map(category => {
+
+                        if(product.categories) {
+                            product.categories.find(item => {
+                                if(item.toString() === category._id.toString()) {
+                                    category.selected=true;
+                                }
+                            })
+                        }
+                        return category;
+                    })
+
+                    res.render('admin/edit-product', {
+                        title: 'Edit Product',
+                        path: '/admin/products',
+                        product: product,
+                        categories: categories
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        })
+        .catch(err => console.log(err));
 };
+
+
 
 // POST EDIT PRODUCT --> /admin/products?action=edit
 exports.postEditProduct = (req, res, next) => {
@@ -81,13 +108,15 @@ exports.postEditProduct = (req, res, next) => {
     const price = req.body.price;
     const imageUrl = req.body.imageUrl;
     const description = req.body.description;
+    const ids = req.body.categoryids;
 
     Product.update({ _id: id }, {
         $set: {
             name: name,
             price: price,
             imageUrl: imageUrl,
-            description: description
+            description: description,
+            categories: ids
         }
     })
         .then(() => {
@@ -96,21 +125,6 @@ exports.postEditProduct = (req, res, next) => {
         .catch(err => {
             console.log(err);
         })
-
-    // Product.findById(id)
-    //     .then(product => {
-    //         product.name = name;
-    //         product.price = price;
-    //         product.imageUrl = imageUrl;
-    //         product.description = description;
-    //         return product.save()
-    //     })
-    //     .then(() => {
-    //         res.redirect('/admin/products?action=edit');
-    //     })
-    //     .catch(err => {
-    //         console.log(err);
-    //     })
 };
 
 // POST DELETE PRODUCT --> admin/products?action=delete
@@ -127,10 +141,11 @@ exports.postDeleteProduct = (req, res, next) => {
 
 // GET ALL CATEGORIES --> admin/categories
 exports.getCategories = (req, res, next) => {
-    Category.findAll()
+    Category.find()
         .then(categories => {
+            console.log(categories);
             res.render('admin/categories', {
-                title: 'Admin Categories',
+                title: 'Admin categories',
                 categories: categories,
                 path: '/admin/categories',
                 action: req.query.action
@@ -153,10 +168,15 @@ exports.getAddCategory = (req, res, next) => {
 exports.postAddCategory = (req, res, next) => {
     const name = req.body.name;
     const description = req.body.description;
-    const category = new Category(name, description, null, req.user._id);
-
+    const category = new Category(
+        {
+            name: name,
+            description: description,
+            userId: req.user
+        }
+    );
     category.save()
-        .then(result => {
+        .then(() => {
             res.redirect('/admin/categories?action=create');
         })
         .catch(err => {
@@ -169,10 +189,9 @@ exports.getEditCategory = (req, res, next) => {
 
     Category.findById(req.params.categoryid)
         .then(category => {
-            console.log(category);
             res.render('admin/edit-category', {
                 title: 'Edit Category',
-                path: '/admin/categories',
+                path: '/admin/category',
                 category: category,
             });
         })
@@ -187,10 +206,14 @@ exports.postEditCategory = (req, res, next) => {
     const id = req.body.id;
     const name = req.body.name;
     const description = req.body.description;
-    const category = new Category(name, description, id, req.user._id);
 
-    category.save()
-        .then(result => {
+    Category.update({ _id: id }, {
+        $set: {
+            name: name,
+            description: description
+        }
+    })
+        .then(() => {
             res.redirect('/admin/categories?action=edit');
         })
         .catch(err => {
@@ -200,7 +223,7 @@ exports.postEditCategory = (req, res, next) => {
 
 // POST DELETE CATEGORY --> admin/categories?action=delete
 exports.postDeleteCategory = (req, res, next) => {
-    Category.deleteById(req.body.categoryid)
+    Category.findByIdAndRemove(req.body.categoryid)
         .then(() => {
             res.redirect('/admin/categories?action=delete');
         })

@@ -21,20 +21,20 @@ block content
                 each product in products
                     tr
                         td
-                            img(src=`/img/${product.imageUrl}` width='80')
-                        td #{product.name}
+                            img(src=`/img/${product.productId.imageUrl}` width='80')
+                        td #{product.productId.name}
                         td #{product.quantity} 
-                        td #{product.price} TL
+                        td #{product.productId.price} TL
                         td 
                             form(action='/delete-cartitem', method='POST')
-                                input(type='hidden' name='productid' value=`${product._id}`)
+                                input(type='hidden' name='productid' value=`${product.productId._id}`)
                                 button(type='submit').btn.btn-danger.btn-sm Delete
             tfoot
                 td(colspan="4")
 
                     - var total = 0;
                     each product in products
-                        - total += (product.price * product.quantity)
+                        - total += (product.productId.price * product.quantity)
 
                 td #{total} TL
 

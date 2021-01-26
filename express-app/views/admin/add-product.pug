@@ -20,13 +20,13 @@ block content
             .col-sm-10
                 input.form-control#imageUrl(type="text" name="imageUrl")
 
-        //- .form-group.row
-        //-     label(for="categoryid").col-sm-2.col-form-label Category
-        //-     .col-sm-10
-        //-         select.form-control#categoryid(name="categoryid")
-        //-             option(value="-1") Select Category
-        //-             each category in categories
-        //-                 option(value=`${category.id}`) #{category.name}
+        .form-group.row
+            label(for="categoryid").col-sm-2.col-form-label Category
+            .col-sm-10
+                select.form-control#categoryid(name="categoryid")
+                    option(value="-1") Select Category
+                    each category in categories
+                        option(value=`${category.id}`) #{category.name}
 
         .form-group.row
             label(for="description").col-sm-2.col-form-label Description
