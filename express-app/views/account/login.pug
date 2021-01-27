@@ -5,7 +5,7 @@ block styles
 
 block content
     if errorMessage
-        .alert.alert-danger.col-sm-7 #{errorMessage}
+        .alert.alert-danger.col-sm-7 !{errorMessage}
     form(action="/login" method="POST")
         input(type="hidden" name="_csrf" value=`${csrfToken}`)
         .form-group.row
@@ -21,3 +21,7 @@ block content
         .form-group.row
             .col-sm-10.offset-sm-2
                 input.btn.btn-primary(type="submit" value="Submit")
+
+        .form-group.row
+            .col-sm-10.offset-sm-2
+                a(href="/reset-password").btn.btn-link.p-0 Reset Password

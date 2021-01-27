@@ -1,5 +1,6 @@
 const Product = require('./product');
 const mongoose = require('mongoose');
+const { isEmail } = require('validator');
 
 const userSchema = mongoose.Schema({
     name: {
@@ -8,11 +9,17 @@ const userSchema = mongoose.Schema({
     },
     email: {
         type: String,
-        required: true
+        validate: [isEmail, 'Geçersiz Email Adresi']
     },
     password: {
         type: String,
         required: true
+    },
+    resetToken: String,
+    resetTokenExpiration: Date,
+    isAdmin: {
+        type: Boolean,
+        default: false
     },
     cart: {
         items: [
@@ -104,79 +111,3 @@ userSchema.methods.clearCart = function () {
 }
 
 module.exports = mongoose.model('User', userSchema);
-
-//     addOrder() {
-//         // get cart
-//         // create order object
-//         // save order
-//         // update cart
-//         const db = getDb();
-//         return this.getCart()
-//             .then(products => {
-//                 const order = {
-//                     items: products.map(item => {
-//                         return {
-//                             _id: item._id,
-//                             name: item.name,
-//                             price: item.price,
-//                             imageUrl: item.imageUrl,
-//                             userId: item.userId,
-//                             quantity: item.quantity
-//                         }
-//                     }),
-//                     user: {
-//                         _id: mongodb.ObjectId(this._id),
-//                         name: this.name,
-//                         email: this.email
-//                     },
-//                     date: new Date().toLocaleString()
-//                 }
-
-//                 return db.collection('orders').insertOne(order);
-//             })
-//             .then(() => {
-//                 this.cart = { items: [] };
-//                 return db.collection('users')
-//                     .updateOne(
-//                         { _id: new mongodb.ObjectId(this._id) },
-//                         {
-//                             $set: { cart: { items: [] } }
-//                         }
-//                     )
-//             })
-//     };
-
-//     getOrders() {
-//         const db = getDb();
-//         return db.collection('orders')
-//             .find({ 'user._id': new mongodb.ObjectId(this._id) })
-//             .toArray();
-//     };
-
-//     static findById(userid) {
-//         const db = getDb();
-//         return db.collection('users')
-//             .findOne({ _id: new mongodb.ObjectId(userid) })
-//             .then(user => {
-//                 return user;
-//             })
-//             .catch(err => {
-//                 console.log(err);
-//             });
-//     };
-
-//     static findByUserName(username) {
-//         const db = getDb();
-//         return db.collection('users')
-//             .findOne({ name: username })
-//             .then(user => {
-//                 return user;
-//             })
-//             .catch(err => {
-//                 console.log(err);
-//             });
-//     };
-
-// };
-
-// module.exports = User;

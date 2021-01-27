@@ -7,7 +7,7 @@ block content
 
     if (action !== 'undefined' && action === 'edit')
         div.alert.alert-warning The product has been updated.
-        
+
     if (action !== 'undefined' && action === 'delete')
         div.alert.alert-danger The product has been deleted.
 
@@ -30,8 +30,8 @@ block content
                         td #{product.userId.name}
                         td 
                             a.btn.btn-primary.btn-sm.mr-2(href=`/admin/products/${product._id}`) Edit
-                            
-                            form(action='/admin/delete-product', method='POST')
+
+                            form(action='/admin/delete-product' method='POST')
                                 input(type="hidden" name="_csrf" value=`${csrfToken}`)
                                 input(type='hidden' name='productid' value=`${product._id}`)
                                 button(type='submit').btn.btn-danger.btn-sm Delete
