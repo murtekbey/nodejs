@@ -81,7 +81,7 @@ exports.getProductsByCategoryId = (req, res, next) => {
         })
         .then(products => {
             res.render("shop/products", {
-                title: 'Products',
+                title: 'Products',  
                 products: products,
                 categories: model.categories,
                 selectedCategory: categoryId,
@@ -178,7 +178,7 @@ exports.postOrder = (req, res, next) => {
                 user: {
                     userId: req.user._id,
                     name: req.user.name,
-                    email: req.user.email
+                    email: req.user.email   
                 },
                 items: user.cart.items.map(p => {
                     return {

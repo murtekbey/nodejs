@@ -41,6 +41,7 @@ block content
         .text-center
             a(href="/").btn.btn-primary Alışverişe Devam Et
             form(action='/create-order' method='POST')
+                input(type="hidden" name="_csrf" value=`${csrfToken}`)
                 button(type="submit").btn.btn-primary.ml-2 Alışverişi Tamamla
     else
         h1 No Products

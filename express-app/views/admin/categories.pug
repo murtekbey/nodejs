@@ -27,6 +27,7 @@ block content
                             a.btn.btn-primary.btn-sm.mr-2(href=`/admin/categories/${category._id}`) Edit
                             
                             form(action='/admin/delete-category', method='POST')
+                                input(type="hidden" name="_csrf" value=`${csrfToken}`)
                                 input(type='hidden' name='categoryid' value=`${category._id}`)
                                 button(type='submit').btn.btn-danger.btn-sm Delete
 

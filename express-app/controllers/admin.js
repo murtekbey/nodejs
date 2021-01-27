@@ -11,8 +11,7 @@ exports.getProducts = (req, res, next) => {
     Product.find()
         .populate('userId', 'name -_id')
         .select('name price userId imageUrl')
-        .then(products => {
-            console.log(products);
+        .then(products => { 
             res.render('admin/products', {
                 title: 'Admin Products',
                 products: products,
@@ -27,10 +26,20 @@ exports.getProducts = (req, res, next) => {
 
 // GET ADD PRODUCT --> admin/add-product
 exports.getAddProduct = (req, res, next) => {
-    res.render('admin/add-product', {
-        title: 'New Product',
-        path: '/admin/add-product',
-    });
+    Category.find()
+        .then(categories => {
+            return categories;
+        })
+        .then(categories => {
+            res.render('admin/add-product', {
+                title: 'New Product',
+                path: '/admin/add-product',
+                categories : categories
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
 };
 
 // POST ADD PRODUCT -->
@@ -39,13 +48,15 @@ exports.postAddProduct = (req, res, next) => {
     const price = req.body.price;
     const imageUrl = req.body.imageUrl;
     const description = req.body.description;
+    const ids = req.body.categoryids;
     const product = new Product(
         {
             name: name,
             price: price,
             imageUrl: imageUrl,
             description: description,
-            userId: req.user
+            userId: req.user,
+            categories: ids
         }
     );
     product.save()
@@ -146,8 +157,8 @@ exports.getCategories = (req, res, next) => {
             console.log(categories);
             res.render('admin/categories', {
                 title: 'Admin categories',
-                categories: categories,
                 path: '/admin/categories',
+                categories: categories,
                 action: req.query.action
             });
         })
@@ -160,7 +171,7 @@ exports.getCategories = (req, res, next) => {
 exports.getAddCategory = (req, res, next) => {
     res.render('admin/add-category', {
         title: 'New Category',
-        path: '/admin/add-category',
+        path: '/admin/add-category'
     });
 };
 
@@ -192,7 +203,7 @@ exports.getEditCategory = (req, res, next) => {
             res.render('admin/edit-category', {
                 title: 'Edit Category',
                 path: '/admin/category',
-                category: category,
+                category: category
             });
         })
         .catch(err => {
