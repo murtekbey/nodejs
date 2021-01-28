@@ -3,3 +3,4 @@
 3-Npm/4-npm-scripts-ve-nodemon/node_modules
 express-app/node_modules
 express-app/utility
+express-app/app.js

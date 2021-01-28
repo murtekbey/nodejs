@@ -35,8 +35,12 @@ block content
         .form-group.row
             label(for="description").col-sm-2.col-form-label Description
             .col-sm-10
-                textarea.form-control#description(name="description", cols="30", rows="10") #{product.description}
+                textarea.form-control#editor(name="description", cols="30", rows="10") #{product.description}
 
         .form-group.row
             .col-sm-10.offset-sm-2
                 input.btn.btn-primary(type="submit" value="Save Product")
+
+block script
+    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+    <script src="/js/script.js"></script>
